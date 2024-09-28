@@ -6,3 +6,10 @@
 body {
   height: 100vh;
 }
+
+form {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 48px 0;
+}
