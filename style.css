@@ -5,6 +5,9 @@
 
 body {
   height: 100vh;
+  font-family: "Noto Sans";
+  background: url(images/sky.jpeg);
+  background-size: 100% 100%;
 }
 
 form {
@@ -12,4 +15,17 @@ form {
   justify-content: center;
   gap: 8px;
   padding: 48px 0;
+}
+
+input {
+  padding: 4px;
+}
+
+button {
+  padding: 6px 8px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #FFF;
+  color: 000;
 }
