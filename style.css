@@ -5,7 +5,7 @@
 
 body {
   height: 100vh;
-  font-family: "Noto Sans";
+  font-family: 'Noto Sans';
   background: url(images/sky.jpeg);
   background-size: 100% 100%;
 }
@@ -27,5 +27,29 @@ button {
   border-radius: 8px;
   cursor: pointer;
   background: #FFF;
-  color: 000;
+  color: #000;
+}
+
+.container {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.divider {
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #FFF;
+}
+
+.conditions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
 }
