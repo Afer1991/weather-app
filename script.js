@@ -9,7 +9,7 @@ const fetchWeatherData = async (location) => {
     const res = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=NMYVKGRNDCRUPXVBFYYXS86SR`);
     const data = await res.json();
     clearContent();
-    renderContent(returnWeatherInfo(data).location, returnWeatherInfo(data).conditions, returnWeatherInfo(data).temp, returnWeatherInfo(data).feelsLike, returnWeatherInfo(data).humidity, returnWeatherInfo(data).wind);
+    renderContent(capFirstLetter(location), returnWeatherInfo(data).conditions, returnWeatherInfo(data).temp, returnWeatherInfo(data).feelsLike, returnWeatherInfo(data).humidity, returnWeatherInfo(data).wind);
     currentInput = location;
   } catch {
     alert("Location not found");
@@ -17,14 +17,13 @@ const fetchWeatherData = async (location) => {
 };
 
 function returnWeatherInfo(data) {
-  const location = data.resolvedAddress;
   const conditions = data.currentConditions.conditions;
   const temp = data.currentConditions.temp;
   const feelsLike = data.currentConditions.feelslike;
   const humidity = data.currentConditions.humidity;
   const wind = data.currentConditions.windspeed;
 
-  return { location, conditions, temp, feelsLike, humidity, wind };
+  return { conditions, temp, feelsLike, humidity, wind };
 };
 
 const convertToF = (F) => {
@@ -38,6 +37,19 @@ const clearContent = () => {
   };
 };
 
+const capFirstLetter = (str) => {
+  const splitArr = str.toLowerCase().split("");
+  let newStr = "";
+  for (i = 0; i < splitArr.length; i++) {
+    if (i == 0) {
+      newStr += splitArr[i].toUpperCase();
+    } else {
+      newStr += splitArr[i];
+    }
+  };
+  return newStr;
+};
+
 const renderContent = (loc, cond, tp, flk, hmdt, wnd ) => {
   const container = document.createElement("div");
   container.classList.add("container");
@@ -47,45 +59,30 @@ const renderContent = (loc, cond, tp, flk, hmdt, wnd ) => {
   divider.classList.add("divider");
   container.appendChild(divider);
 
-  const location = document.createElement("div");
-  location.classList.add("location");
-  divider.appendChild(location);
+  const header = document.createElement("h1");
+  header.textContent = `${loc}`;
+  divider.appendChild(header);
 
-  const para1 = document.createElement("p");
-  para1.textContent = `${loc}`;
-  location.appendChild(para1);
+  const subheader = document.createElement("h3");
+  subheader.textContent = `${cond}`;
+  divider.appendChild(subheader);
 
-  const para2 = document.createElement("p");
-  para2.textContent = `${cond}`;
-  location.appendChild(para2);
-
-  const conditions = document.createElement("div");
-  conditions.classList.add("conditions");
-  divider.appendChild(conditions);
-
-  const temp = document.createElement("div");
+  const temp = document.createElement("p");
   temp.classList.add("temp");
-  conditions.appendChild(temp);
+  temp.textContent = `${ celsius ? convertToF(tp) + " °C": tp + " °F"}`;
+  divider.appendChild(temp);
 
-  const para3 = document.createElement("p");
-  para3.textContent = `${ celsius ? convertToF(tp) + " °C": tp + " °F"}`;
-  temp.appendChild(para3);
+  const feelsLike = document.createElement("p");
+  feelsLike.textContent = `Feels Like: ${ celsius ? convertToF(flk) + " °C" : flk + " °F"}`;
+  divider.appendChild(feelsLike);
 
-  const stats = document.createElement("div");
-  stats.classList.add("stats");
-  conditions.appendChild(stats);
+  const wind = document.createElement("p");
+  wind.textContent = `Wind: ${celsius ? Math.round(wnd * 1.60934) + " km/h" : wnd + " mph"}`;
+  divider.appendChild(wind);
 
-  const para4 = document.createElement("p");
-  para4.textContent = `Feels Like: ${ celsius ? convertToF(flk) + " °C" : flk + " °F"}`;
-  stats.appendChild(para4);
-
-  const para5 = document.createElement("p");
-  para5.textContent = `Humidity: ${hmdt}%`;
-  stats.appendChild(para5);
-
-  const para6 = document.createElement("p");
-  para6.textContent = `Wind: ${celsius ? Math.round(wnd * 1.60934) + " km/h" : wnd + " mph"}`;
-  stats.appendChild(para6);
+  const humidity = document.createElement("p");
+  humidity.textContent = `Humidity: ${hmdt}%`;
+  divider.appendChild(humidity);
 
   const btnContainer = document.createElement("div");
   btnContainer.classList.add("btn-container");
